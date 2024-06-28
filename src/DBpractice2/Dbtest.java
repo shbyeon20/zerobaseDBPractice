@@ -10,8 +10,10 @@ public class Dbtest {
         String password = "!tkdghk6226";
         Connection conn = null;
 
-        //1. 드라이버 로드
+        //1. 드라이버 로드(라이브러리)
+        //2.
 
 
+        Class.forName()
     }
 }
