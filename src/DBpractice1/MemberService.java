@@ -16,7 +16,7 @@ public class MemberService {
     /**
      * 회원탈퇴
      * @param member 회원정보
-     * @return 성공여부
+     * @return 성공여부 sdfsf
      */
 
     public boolean withdraw(Member member) {
