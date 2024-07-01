@@ -4,43 +4,133 @@ import java.sql.*;
 
 public class DbTest {
 
+    public void Dbdelete() {
+        String url = "jdbc:mariadb://localhost:3306/test1";
+        String user = "testuser1";
+        String DBpassword = "!tkdghk6226";
+
+        String sql = "Delete from zerobase_member1 where email = ?  And password = ?;";
+        String email = "jjh@gmail.com";
+        String password = "1234";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+                Class.forName("org.mariadb.jdbc.Driver");
+            connection = DriverManager.getConnection(url, user, DBpassword);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            int affected = preparedStatement.executeUpdate();
+
+            if (affected > 0) {
+                System.out.println("삭제성공");
+            } else {
+                System.out.println("삭제실패");
+            }
 
 
-    public void DbInsert(){
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    public void DbUpdate() {
         String url = "jdbc:mariadb://localhost:3306/test1";
         String user = "testuser1";
         String DBpassword = "!tkdghk6226";
 
         Connection connection = null;
-        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+
+        String email = "bsh6226@gmail(4).com";
+        String password = "4321";
+        String newpassword = "1234";
+
+
+        String sql = "update zerobase_member1 set password = ? where email = ? and password = ?;";
+
+        try {
+            Class.forName("org.mariadb.jdbc.Driver");
+
+            connection = DriverManager.getConnection(url, user, DBpassword);
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, newpassword);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, password);
+
+
+
+            int affected = preparedStatement.executeUpdate();
+
+            if (affected > 0) {
+                System.out.println("수정성공");
+            } else {
+                System.out.println("수정실패");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (preparedStatement != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+
+    public void DbInsert() {
+        String url = "jdbc:mariadb://localhost:3306/test1";
+        String user = "testuser1";
+        String DBpassword = "!tkdghk6226";
+
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
 
-            connection = DriverManager.getConnection(url,user,DBpassword);
+            connection = DriverManager.getConnection(url, user, DBpassword);
 
-        String name = "조정해";
-        String email = "jjh@gmail.com";
-        String phone = "01065009238";
-        String password = "1234";
-        int Marketing = 0;
+            String name = "조정해";
+            String email = "jjh@gmail.com";
+            String phone = "01065009238";
+            String password = "1234";
+            int Marketing = 0;
 
-        String sql = "insert into zerobase_member1 (name, email, mobile_no, password, marketing_yn, register_date) \n" +
-                "values (?,?,?,?,?,NOW());";
+            String sql = "insert into zerobase_member1 (name, email, mobile_no, password, marketing_yn, register_date) \n" +
+                    "values (?,?,?,?,?,NOW());";
 
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(2,email);
-            preparedStatement.setString(3,phone);
-            preparedStatement.setString(4,password);
-            preparedStatement.setInt(5,Marketing);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, phone);
+            preparedStatement.setString(4, password);
+            preparedStatement.setInt(5, Marketing);
             int affected = preparedStatement.executeUpdate();
             if (affected > 0) {
-                System.out.println("성공");
-            }else{
-                System.out.println("실패");
+                System.out.println("저장성공");
+            } else {
+                System.out.println("저장실패");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -48,6 +138,7 @@ public class DbTest {
 
 
     }
+
 
     public void DbSelect() {
         String url = "jdbc:mariadb://localhost:3306/test1";
@@ -71,12 +162,11 @@ public class DbTest {
 
             String sql = "select name, email, password\n" +
                     "from zerobase_member1 zm \n" +
-                    "where marketing_yn = ? and  name = ?" +
+                    "where marketing_yn = ? " +
                     ";";
 
-             preparedStatement  = connection.prepareStatement(sql); // sql String을 url에서 조작하는 것을 방지하기 위해서 조건절값 코드 내 숨기기
-             preparedStatement.setString(1,marketingValue); // 1. sql문의 ?에 해당 값이 입력됨
-             preparedStatement.setString(2,nameValue); // 2. sql문의 ?에 해당 값이 입력됨
+            preparedStatement = connection.prepareStatement(sql); // sql String을 url에서 조작하는 것을 방지하기 위해서 조건절값 코드 내 숨기기
+            preparedStatement.setString(1, marketingValue); // 1. sql문의 ?에 해당 값이 입력됨
 
 
             resultSet = preparedStatement.executeQuery();
@@ -118,3 +208,4 @@ public class DbTest {
         }
     }
 }
+
